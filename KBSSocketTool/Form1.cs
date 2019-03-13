@@ -59,7 +59,7 @@ namespace KBSSocketTool
                     {
                         TbRxd.Invoke(new Action(() =>
                         {
-                            TbRxd.AppendText(Encoding.ASCII.GetString(bytes, 0, bytesRec) + Environment.NewLine + Environment.NewLine);
+                            TbRxd.AppendText(ReplaceSonder(Encoding.ASCII.GetString(bytes, 0, bytesRec)) + Environment.NewLine + Environment.NewLine);
                         }));
                     }
                 }
@@ -92,7 +92,7 @@ namespace KBSSocketTool
                     {
                         TbTxd.Invoke(new Action(() =>
                         {
-                            TbTxd.AppendText(telegram + Environment.NewLine);
+                            TbTxd.AppendText(ReplaceSonder(telegram) + Environment.NewLine);
                         }));
 
                         String qTelegram = QuittiereTelegram(telegram);
@@ -100,9 +100,10 @@ namespace KBSSocketTool
                         byte[] msg = Encoding.ASCII.GetBytes(qTelegram);
 
                         int bytesSent = txdSocket.Send(msg);
+
                         TbTxd.Invoke(new Action(() =>
                         {
-                            TbTxd.AppendText(qTelegram + Environment.NewLine + Environment.NewLine);
+                            TbTxd.AppendText(ReplaceSonder(qTelegram) + Environment.NewLine + Environment.NewLine);
                         }));
                     }
                 }
@@ -134,16 +135,24 @@ namespace KBSSocketTool
         {
             try
             {
-                byte[] msg = Encoding.ASCII.GetBytes((char)0x02 + TbTelegram.Text + (char)0x03);
+                String telegram = (char)0x02 + TbTelegram.Text + (char)0x03;
+                byte[] msg = Encoding.ASCII.GetBytes(telegram);
 
                 int bytesSent = rxdSocket.Send(msg);
-                TbRxd.AppendText(TbTelegram.Text + Environment.NewLine);
+                TbRxd.AppendText(ReplaceSonder(telegram) + Environment.NewLine);
+
+                TbTelegram.Text = "";
             }
             catch(Exception ex)
             {
                 TbRxd.Text += Environment.NewLine + ex.Message;
             }
             
+        }
+
+        private String ReplaceSonder(String a)
+        {
+            return a.Replace((char)0x02 + "", "<STX>").Replace((char)0x03 + "", "<ETX>");
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)

@@ -100,6 +100,7 @@
             // 
             // Form1
             // 
+            this.AcceptButton = this.CmdSende;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(917, 567);
@@ -110,7 +111,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TbRxd);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "KBSSocketTool";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
