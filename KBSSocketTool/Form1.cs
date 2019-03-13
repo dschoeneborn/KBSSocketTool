@@ -9,7 +9,7 @@ namespace KBSSocketTool
 {
     public partial class Form1 : Form
     {
-        private static IPAddress winKommIp = IPAddress.Parse("10.149.11.250");
+        private static IPAddress winKommIp = IPAddress.Parse("10.149.1.25");
 
         private static int rxdPort = 4099;
         private static int txdPort = 4100;
@@ -19,6 +19,9 @@ namespace KBSSocketTool
 
         private static Socket rxdSocket;
         private static Socket txdSocket;
+
+        private Thread rxdThread;
+        private Thread txdThread;
 
         public Form1()
         {
@@ -35,8 +38,11 @@ namespace KBSSocketTool
             rxdSocket.Connect(rxdEndpoint);
             txdSocket.Connect(txdEndpoint);
 
-            new Thread(StartRxd).Start();
-            new Thread(StartTxd).Start();
+            rxdThread = new Thread(StartRxd);
+            txdThread = new Thread(StartTxd);
+
+            rxdThread.Start();
+            txdThread.Start();
         }
 
         public void StartRxd()
@@ -49,7 +55,13 @@ namespace KBSSocketTool
                 {
                     int bytesRec = rxdSocket.Receive(bytes);
 
-                    TbRxd.Text += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    if(bytesRec > 0)
+                    {
+                        TbRxd.Invoke(new Action(() =>
+                        {
+                            TbRxd.AppendText(Encoding.ASCII.GetString(bytes, 0, bytesRec) + Environment.NewLine + Environment.NewLine);
+                        }));
+                    }
                 }
                 catch (ArgumentNullException ane)
                 {
@@ -73,17 +85,26 @@ namespace KBSSocketTool
             {
                 try
                 {
-                    int bytesRec = rxdSocket.Receive(bytes);
+                    int bytesRec = txdSocket.Receive(bytes);
 
-                    TbTxd.Text += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    String telegram = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    if(bytesRec > 0)
+                    {
+                        TbTxd.Invoke(new Action(() =>
+                        {
+                            TbTxd.AppendText(telegram + Environment.NewLine);
+                        }));
 
-                    String qTelegram = QuittiereTelegram(Encoding.ASCII.GetString(bytes, 0, bytesRec));
+                        String qTelegram = QuittiereTelegram(telegram);
 
-                    byte[] msg = Encoding.ASCII.GetBytes(qTelegram);
+                        byte[] msg = Encoding.ASCII.GetBytes(qTelegram);
 
-                    int bytesSent = rxdSocket.Send(msg);
-                    TbTxd.Text += Environment.NewLine + qTelegram;
-
+                        int bytesSent = txdSocket.Send(msg);
+                        TbTxd.Invoke(new Action(() =>
+                        {
+                            TbTxd.AppendText(qTelegram + Environment.NewLine + Environment.NewLine);
+                        }));
+                    }
                 }
                 catch (ArgumentNullException ane)
                 {
@@ -116,7 +137,7 @@ namespace KBSSocketTool
                 byte[] msg = Encoding.ASCII.GetBytes((char)0x02 + TbTelegram.Text + (char)0x03);
 
                 int bytesSent = rxdSocket.Send(msg);
-                TbRxd.Text += Environment.NewLine + TbTelegram.Text;
+                TbRxd.AppendText(TbTelegram.Text + Environment.NewLine);
             }
             catch(Exception ex)
             {
@@ -130,6 +151,9 @@ namespace KBSSocketTool
             // Release the socket.  
             rxdSocket.Shutdown(SocketShutdown.Both);
             rxdSocket.Close();
+
+            txdSocket.Shutdown(SocketShutdown.Both);
+            txdSocket.Close();
         }
     }
 }
