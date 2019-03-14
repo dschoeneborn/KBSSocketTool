@@ -43,6 +43,8 @@ namespace KBSSocketTool
 
             rxdThread.Start();
             txdThread.Start();
+
+            TbTelegram.Text = "00050001";
         }
 
         public void StartRxd()
@@ -59,7 +61,13 @@ namespace KBSSocketTool
                     {
                         TbRxd.Invoke(new Action(() =>
                         {
-                            TbRxd.AppendText(ReplaceSonder(Encoding.ASCII.GetString(bytes, 0, bytesRec)) + Environment.NewLine + Environment.NewLine);
+                            String qTelegram = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+
+                            TbRxd.AppendText(ReplaceSonder( qTelegram + Environment.NewLine + Environment.NewLine));
+
+                            TbTelegram.Text = (Convert.ToInt16(qTelegram.Substring(1, 2)) + 1).ToString("00") + qTelegram.Substring(3, 6);
+
+                            TbRxd.ScrollToCaret();
                         }));
                     }
                 }
@@ -142,12 +150,14 @@ namespace KBSSocketTool
 
                 int bytesSent = rxdSocket.Send(msg);
                 TbRxd.AppendText(ReplaceSonder(telegram) + Environment.NewLine);
+                TbRxd.ScrollToCaret();
 
                 TbTelegram.Text = "";
             }
             catch(Exception ex)
             {
                 TbRxd.Text += Environment.NewLine + ex.Message;
+                TbRxd.ScrollToCaret();
             }
             
         }
@@ -159,6 +169,8 @@ namespace KBSSocketTool
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            rxdThread.Abort();
+            txdThread.Abort();
             // Release the socket.  
             rxdSocket.Shutdown(SocketShutdown.Both);
             rxdSocket.Close();
