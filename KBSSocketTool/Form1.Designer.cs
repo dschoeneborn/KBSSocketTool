@@ -40,6 +40,7 @@
             // 
             this.TbRxd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.TbRxd.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.TbRxd.Location = new System.Drawing.Point(12, 45);
             this.TbRxd.Name = "TbRxd";
             this.TbRxd.ReadOnly = true;
@@ -72,7 +73,8 @@
             // 
             this.TbTxd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TbTxd.Location = new System.Drawing.Point(465, 45);
+            this.TbTxd.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.TbTxd.Location = new System.Drawing.Point(468, 45);
             this.TbTxd.Name = "TbTxd";
             this.TbTxd.ReadOnly = true;
             this.TbTxd.Size = new System.Drawing.Size(435, 472);
@@ -90,7 +92,7 @@
             // CmdSende
             // 
             this.CmdSende.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CmdSende.Location = new System.Drawing.Point(465, 532);
+            this.CmdSende.Location = new System.Drawing.Point(453, 533);
             this.CmdSende.Name = "CmdSende";
             this.CmdSende.Size = new System.Drawing.Size(75, 23);
             this.CmdSende.TabIndex = 5;

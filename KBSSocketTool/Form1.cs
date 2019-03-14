@@ -93,6 +93,7 @@ namespace KBSSocketTool
                         TbTxd.Invoke(new Action(() =>
                         {
                             TbTxd.AppendText(ReplaceSonder(telegram) + Environment.NewLine);
+                            TbTxd.ScrollToCaret();
                         }));
 
                         String qTelegram = QuittiereTelegram(telegram);
@@ -104,6 +105,7 @@ namespace KBSSocketTool
                         TbTxd.Invoke(new Action(() =>
                         {
                             TbTxd.AppendText(ReplaceSonder(qTelegram) + Environment.NewLine + Environment.NewLine);
+                            TbTxd.ScrollToCaret();
                         }));
                     }
                 }
