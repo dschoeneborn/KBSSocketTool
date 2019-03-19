@@ -34,6 +34,7 @@
             this.TbTxd = new System.Windows.Forms.RichTextBox();
             this.TbTelegram = new System.Windows.Forms.TextBox();
             this.CmdSende = new System.Windows.Forms.Button();
+            this.CmdInsertEsc = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TbRxd
@@ -100,12 +101,24 @@
             this.CmdSende.UseVisualStyleBackColor = true;
             this.CmdSende.Click += new System.EventHandler(this.CmdSende_Click);
             // 
+            // CmdInsertEsc
+            // 
+            this.CmdInsertEsc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CmdInsertEsc.Location = new System.Drawing.Point(534, 533);
+            this.CmdInsertEsc.Name = "CmdInsertEsc";
+            this.CmdInsertEsc.Size = new System.Drawing.Size(75, 23);
+            this.CmdInsertEsc.TabIndex = 6;
+            this.CmdInsertEsc.Text = "Insert<ESC>";
+            this.CmdInsertEsc.UseVisualStyleBackColor = true;
+            this.CmdInsertEsc.Click += new System.EventHandler(this.CmdInsertEsc_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.CmdSende;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(917, 567);
+            this.Controls.Add(this.CmdInsertEsc);
             this.Controls.Add(this.CmdSende);
             this.Controls.Add(this.TbTelegram);
             this.Controls.Add(this.TbTxd);
@@ -128,6 +141,7 @@
         private System.Windows.Forms.RichTextBox TbTxd;
         private System.Windows.Forms.TextBox TbTelegram;
         private System.Windows.Forms.Button CmdSende;
+        private System.Windows.Forms.Button CmdInsertEsc;
     }
 }
 

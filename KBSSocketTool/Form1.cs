@@ -156,7 +156,7 @@ namespace KBSSocketTool
             }
             catch(Exception ex)
             {
-                TbRxd.Text += Environment.NewLine + ex.Message;
+                TbRxd.AppendText(Environment.NewLine + ex.Message);
                 TbRxd.ScrollToCaret();
             }
             
@@ -164,7 +164,7 @@ namespace KBSSocketTool
 
         private String ReplaceSonder(String a)
         {
-            return a.Replace((char)0x02 + "", "<STX>").Replace((char)0x03 + "", "<ETX>");
+            return a.Replace((char)0x02 + "", "<STX>").Replace((char)0x03 + "", "<ETX>").Replace((char)0x1B + "", "<ESC>");
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -177,6 +177,11 @@ namespace KBSSocketTool
 
             txdSocket.Shutdown(SocketShutdown.Both);
             txdSocket.Close();
+        }
+
+        private void CmdInsertEsc_Click(object sender, EventArgs e)
+        {
+            TbTelegram.AppendText((char)0x1B + "");
         }
     }
 }
